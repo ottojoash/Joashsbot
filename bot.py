@@ -2,7 +2,7 @@ import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Set up the bot and get the update queue
-updater = Updater("YOUR_BOT_TOKEN", use_context=True)
+updater = Updater("5819005387:AAFlBtVCLXX4NHI8bMKPsyUhp97wNW4vgB0", use_context=True)
 dispatcher = updater.dispatcher
 
 # Define the start command handler
