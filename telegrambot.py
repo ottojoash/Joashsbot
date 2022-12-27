@@ -1,27 +1,24 @@
 import telegram
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Set up the bot and get the update queue
+#place your bot token in the updater
 updater = Updater("5819005387:AAFlBtVCLXX4NHI8bMKPsyUhp97wNW4vgB0", use_context=True)
 dispatcher = updater.dispatcher
 
-# Define the message handler function
-def message_handler(update, context):
-  # Get the incoming message
-  message = update.message
-  text = message.text
+# Define the start command handler
+def start(update, context):
+  context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, I am a Joashbot. How can I help you today?")
 
-  # Check the incoming message and respond accordingly
-  if "hello" in text.lower():
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, how are you today?")
-  elif "goodbye" in text.lower():
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Goodbye, have a nice day!")
-  else:
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm sorry, I didn't understand your message.")
+start_handler = CommandHandler("start", start)
+dispatcher.add_handler(start_handler)
 
-# Set up the message handler
-message_handler = MessageHandler(Filters.text, message_handler)
-dispatcher.add_handler(message_handler)
+# Define the echo command handler
+def echo(update, context):
+  context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
+
+echo_handler = MessageHandler(Filters.text, echo)
+dispatcher.add_handler(echo_handler)
 
 # Start the bot
 updater.start_polling()
