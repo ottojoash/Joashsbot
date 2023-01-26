@@ -1,24 +1,25 @@
-import telegram
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+# Run the bot
+#bot.polling()
+import telebot
+import requests
+import json
 
-# Set up the bot and get the update queue
-#place your bot token in the updater
-updater = Updater("5819005387:AAFlBtVCLXX4NHI8bMKPsyUhp97wNW4vgB0", use_context=True)
-dispatcher = updater.dispatcher
+# Replace YOUR_TOKEN with your Telegram bot token
+bot = telebot.TeleBot("5819005387:AAFlBtVCLXX4NHI8bMKPsyUhp97wNW4vgB0")
 
-# Define the start command handler
-def start(update, context):
-  context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, I am a Joashbot. How can I help you today?")
+# Replace YOUR_API_KEY and YOUR_CX with your Google Custom Search API key and cx
+GOOGLE_CSE_API_KEY = "AIzaSyCdor8vBVac6DBC0E9s_MxjooPNUyE8CWs"
+GOOGLE_CSE_CX = "730d22ab9b8f3491f"
 
-start_handler = CommandHandler("start", start)
-dispatcher.add_handler(start_handler)
-
-# Define the echo command handler
-def echo(update, context):
-  context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
-
-echo_handler = MessageHandler(Filters.text, echo)
-dispatcher.add_handler(echo_handler)
-
-# Start the bot
-updater.start_polling()
+@bot.message_handler(commands=['search'])
+def search(message):
+    # Extract the search query from the message
+    search_query = message.text.split(" ", 1)[1]
+    # Make a request to the Google Custom Search API
+    search_results = requests.get("https://www.googleapis.com/customsearch/v1", params={
+        "q": search_query,
+        "cx": GOOGLE_CSE_CX,
+        "key": GOOGLE_CSE_API_KEY
+    })
+    # Parse the JSON response
+   
